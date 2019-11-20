@@ -66,7 +66,39 @@ void receive(Data data, Data data_2, Data data_3){
 }
 
 int main(){
+	
+    // Variable decleration.
+    int port = 5000;
+    int buff_size = 1024;
+   
+    // Intialize sockaddr_in struct and its variables.
+    struct sockaddr_in server_address;
+    socklen_t size;
+    server_address.sin_family = AF_INET;
+    server_address.sin_addr.s_addr = INADDR_ANY;
+    server_address.sin_port = htons(port);
+    
+    // Create master socket, which will be used for listening for incoming connections.
+    int master_socket  = socket(AF_INET, SOCK_STREAM, 0);
 
+    // Check whether or not the master socket has been successfully created.
+    // If it returns a negative number it is NOT created properly.
+    if(master_socket < 0) {
+        cout << "\nError making sockets, try reloading the program" << endl;
+        exit(1);
+    } else cout << "\nSocket established" << endl;
+
+
+    
+    // Bind the master socket to the desired port, if this returns a negative number the program will be terminated.
+    if (::bind(master_socket, (struct sockaddr*)&server_address, sizeof(server_address)) < 0) {
+        cout << "\nError binding connection, the socket has already been established..." << endl;
+        // Close the master socket.
+        close(master_socket);
+        return -1;
+    }
+    
+    cout << "\nLooking for clients" << endl;
 
 
 
