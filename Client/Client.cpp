@@ -75,4 +75,36 @@ int main(){
     // Establishes a connection to a specific socket.    
     if (connect(client,(struct sockaddr *)&server_address, sizeof(server_address)) == 0)
         cout << "\nConnection to the server port number: " << port << endl;
+
+	    cout << "Please input your name: ";
+
+    // Get the next input line and store it in the buffer.
+    cin.getline(buffer, buff_size);
+
+    // Send the buffer to the client socket.
+    send(client, buffer, buff_size, 0);
+    
+    // Introduction.
+    cout << "\nWelcome to the chat room, " << buffer << ". To type, write on your keyboard and press the ENTER key. \nFor exitting the program you send the '#' symbol in the chat.";
+    cout << "\n\n";
+    
+    // Create a new thread using the receive function.
+    // Takes 2 arguments; socket and a char buffer.
+    thread t1(receive, client, buffer_);
+
+    // Detach the thread so the main thread does NOT have to wait for it to finish.
+    t1.detach();
+
+    // Infinite loop that is used for getting user input.
+    while(true){
+        // Get the next inputted line and store it in the buffer.
+        cin.getline(buffer, buff_size);
+        // Send the buffer to the client socket.
+        send(client, buffer, buff_size, 0);
+	    cout << "\n";
+    }
+
+    // End program.
+    return 0;
 }
+
