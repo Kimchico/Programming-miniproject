@@ -1,5 +1,5 @@
 # Programming-miniproject
-C++ miniproject of server and client 
+C++ miniproject of server and client.
 
 
 You need to download the CYGWIN emulator since this code does not work on windows.
