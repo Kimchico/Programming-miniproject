@@ -147,8 +147,5 @@ int main(){
     close(client_2.file_d);
 
     // Finish the program.
-
-
-
-  return 0;
+    return 0;
 }
