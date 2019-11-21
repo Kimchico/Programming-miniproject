@@ -99,6 +99,54 @@ int main(){
     }
     
     cout << "\nLooking for clients" << endl;
+	
+	// Listen for incoming connections, with the max cap of 3 connections.
+    listen(master_socket, 3);
+    
+    // Create a new Data struct for each desired client.
+    Data client_1, client_2, client_3;
+
+    // Accept connections from the master socket and assign it to each clients file_d.
+    client_1.file_d = accept(master_socket, (struct sockaddr*)&server_address, &size);
+    client_2.file_d = accept(master_socket, (struct sockaddr*)&server_address, &size);
+    client_3.file_d = accept(master_socket, (struct sockaddr*)&server_address, &size);
+    // Close the master socket.
+    close(master_socket);
+
+    // Check if the client sockets has been created properly.
+    if(client_1.file_d < 0 && client_2.file_d < 0 && client_3.file_d < 0){
+        cout << "\nError on accepting" << endl;
+        return -1;
+    }else cout << "\nConnected" << endl;
+    
+    
+
+    // Receive the names of each client.
+    recv(client_1.file_d, client_1.buffer, (sizeof(client_1.buffer) / sizeof(*client_1.buffer)), 0);
+    recv(client_2.file_d, client_2.buffer, (sizeof(client_2.buffer) / sizeof(*client_2.buffer)), 0);
+    recv(client_3.file_d, client_3.buffer, (sizeof(client_3.buffer) / sizeof(*client_3.buffer)), 0);
+
+    // Assign the Data.name to each respective buffer, now the Server knows what the clients names are.
+    client_1.name = client_1.buffer;
+    client_2.name = client_2.buffer;
+    client_3.name = client_3.buffer;
+    
+    // Create a new thread for each client. 
+    thread t1(receive, client_1, client_2, client_3);
+    thread t2(receive, client_2, client_1, client_3);
+    thread t3(receive, client_3, client_1, client_2);
+    
+    // Wait for each thread to finish.
+    t1.join();
+    t2.join();
+    t3.join();
+
+    // Close each client socket.
+    close(client_1.file_d);
+    close(client_2.file_d);
+    close(client_2.file_d);
+
+    // Finish the program.
 
 
 
