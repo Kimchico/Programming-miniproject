@@ -47,5 +47,32 @@ void receive(int file_d, char buffer[]){
 // Main thread
 int main(){
 
-    return 0;
+    // Variable decleration.
+    int client;
+    int port = 5000;
+    char buffer[1024];
+    char buffer_[1024];
+    int buff_size = (sizeof(buffer) / sizeof(*buffer));
+    struct sockaddr_in server_address;
+
+
+    // server_address.sin_addr.s_addr is the ip address of the machine which the Server.cpp is running on.
+    // Windows: use ipconfig in cmd and set the inet_addr to your IPv4.
+    // If needed to connect mulitple computers uncomment the line below and enter the IPv4 where the Server.cpp is running.
+    // server_address.sin_addr.s_addr = inet_addr("172.20.10.3");
+    server_address.sin_family = AF_INET;
+    server_address.sin_port = htons(port);
+
+    // Created the client socket.
+    client = socket(AF_INET, SOCK_STREAM, 0);
+
+    // If the client socket is a negative number the program will end.
+    if(client < 0){
+        cout << "\nError establishing socket" << endl;
+        exit(1);
+    }
+
+    // Establishes a connection to a specific socket.    
+    if (connect(client,(struct sockaddr *)&server_address, sizeof(server_address)) == 0)
+        cout << "\nConnection to the server port number: " << port << endl;
 }
