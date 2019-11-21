@@ -25,3 +25,16 @@ Then open 4 windows and write the following in each:
 ./b.out
 
 Now the program runs, enjoy!
+
+
+
+
+################ How the program works ##############
+
+You have to start up the server first and then the 3 clients afterwards.
+
+The 3 clients have to enter their name and the program will continue.
+
+Then the clients can write freely to each other.
+
+If they want to end the program they have to send the '#' symbol
